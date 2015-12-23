@@ -7,6 +7,8 @@ namespace MJCommsSimulator
     {
         private SerialPort m_port;
 
+        private byte m_advanceDegrees = 0x00;
+
         public MegaJolt(string port)
         {
             m_port = new SerialPort(port, 38400, Parity.None, 8, StopBits.One);
@@ -29,7 +31,8 @@ namespace MJCommsSimulator
                 switch ((char)buffer)
                 {
                     case 'S':
-                        byte[] data = new State().ToBytes();
+                        byte[] data = new State() { advanceDegrees = m_advanceDegrees }.ToBytes();
+                        m_advanceDegrees++;
                         Console.WriteLine("{0} STATUS Request 'S'", DateTime.Now);
                         m_port.Write(data, 0, data.Length);
                         break;
