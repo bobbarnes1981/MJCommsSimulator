@@ -29,9 +29,12 @@ namespace MJCommsSimulator
         private void port_dataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             Console.WriteLine("Event Type {0}", e.EventType);
-            int buffer = m_port.ReadByte();
-            if (buffer != -1)
+
+            int i = m_port.BytesToRead;
+            int buffer;
+            for (int j = 0; j < i; j++)
             {
+                buffer = m_port.ReadByte();
                 switch ((char)buffer)
                 {
                     case 'V':
